@@ -25288,7 +25288,7 @@
 			value: function render() {
 				return _react2.default.createElement(
 					'div',
-					null,
+					{ className: 'messages' },
 					this.props.messages.map(function (message) {
 						return _react2.default.createElement(_message2.default, { key: message.id, message: message });
 					})
