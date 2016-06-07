@@ -35768,10 +35768,13 @@
 				if (event.keyCode === 13) {
 					if (event.target.value && event.target.value.length > 0) {
 						console.log('new mes');
+
 						// Emit socket event for new todo
 						socket.emit('insert', {
 							content: event.target.value
 						});
+
+						event.target.value = '';
 					} else {
 						_this.setState({ error: 'Tasks must have a name' });
 					}
@@ -37195,6 +37198,7 @@
 
 	exports.default = function (store) {
 		socket.on('insert', function (message) {
+			console.log('inserted');
 			store.dispatch({
 				type: 'insert',
 				message: message

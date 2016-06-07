@@ -15,8 +15,10 @@ var r = require('rethinkdb');
 
 // Socket.io changefeed events
 var changefeedSocketEvents = function(socket, entityName) {
+	console.log("change feed socket events");
 	return function(rows) {
 		rows.each(function(err, row) {
+			// console.log(row);
 			if (err) { return console.log(err); }
 			else if (row.new_val && !row.old_val) {
 				socket.emit("insert", row.new_val);
@@ -41,7 +43,7 @@ r.connect({ db: 'Messenger' })
 			r.table('Messages').insert(message).run(connection);
 		});
 
-		// emit events for changes to todos
+		// emit events for changes to messages
 		r.table('Messages').changes({ includeInitial: true, squash: true }).run(connection)
 		.then(changefeedSocketEvents(socket, 'message'));
 	});
