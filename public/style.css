@@ -6,3 +6,7 @@ body {
 .messages {
 	margin: 20px;
 }
+
+.host {
+	color: #1F8CC1;
+}
