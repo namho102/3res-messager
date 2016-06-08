@@ -29,7 +29,7 @@ var changefeedSocketEvents = function(socket, entityName) {
 
 app.use(express.static('public'));
 
-app.get('*', function(req, res) {
+app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname + '/index.html'));
 });
 
@@ -37,6 +37,12 @@ app.get('*', function(req, res) {
 r.connect({ db: 'Messenger' })
 .then(function(connection) {
 	io.on('connection', function (socket) {
+
+		//new room request
+		socket.on('newRoom', function(room) {
+			r.table('Rooms').insert(room).run(connection);
+		});
+
 
 		// insert new messages
 		socket.on('insert', function(message) {
@@ -46,6 +52,9 @@ r.connect({ db: 'Messenger' })
 		// emit events for changes to messages
 		r.table('Messages').changes({ includeInitial: true, squash: true }).run(connection)
 		.then(changefeedSocketEvents(socket, 'message'));
+
+
+
 	});
 	server.listen(9000, () => {
 		console.log("listening at port 9000")
@@ -55,5 +64,3 @@ r.connect({ db: 'Messenger' })
 	console.log('Error connecting to RethinkDB!');
 	console.log(error);
 });
-
-

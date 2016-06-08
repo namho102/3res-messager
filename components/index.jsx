@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import store from '../stores/messages.js';
 
 import App from './app.jsx';
+import Home from './home.jsx';
 
 // Setup our socket events to dispatch
 import MessageSocketListeners from '../socket-listeners/messages.js';
@@ -20,6 +21,6 @@ injectTapEventPlugin();
 // Render our react app!
 ReactDOM.render(<Provider store={store} >
 	<MuiThemeProvider muiTheme={getMuiTheme()}>
-		<App />
+		<Home />
 	</MuiThemeProvider>
 </Provider>, document.getElementById('main'));
