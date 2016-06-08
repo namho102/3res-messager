@@ -19,8 +19,22 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 // Render our react app!
-ReactDOM.render(<Provider store={store} >
-	<MuiThemeProvider muiTheme={getMuiTheme()}>
-		<Home />
-	</MuiThemeProvider>
-</Provider>, document.getElementById('main'));
+
+if(window.location.pathname == '/') {
+	ReactDOM.render(<Provider store={store} >
+		<MuiThemeProvider muiTheme={getMuiTheme()}>
+			<Home />
+		</MuiThemeProvider>
+	</Provider>, document.getElementById('main'));
+}
+else {
+	var role = 'guest';
+	if(localStorage.getItem('room')) {
+			role = 'host';
+	}
+	ReactDOM.render(<Provider store={store} >
+		<MuiThemeProvider muiTheme={getMuiTheme()}>
+			<App role={role}/>
+		</MuiThemeProvider>
+	</Provider>, document.getElementById('main'));
+}

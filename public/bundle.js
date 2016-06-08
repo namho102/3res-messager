@@ -99,15 +99,32 @@
 	(0, _reactTapEventPlugin2.default)();
 
 	// Render our react app!
-	_reactDom2.default.render(_react2.default.createElement(
-		_reactRedux.Provider,
-		{ store: _messages2.default },
-		_react2.default.createElement(
-			_MuiThemeProvider2.default,
-			{ muiTheme: (0, _getMuiTheme2.default)() },
-			_react2.default.createElement(_home2.default, null)
-		)
-	), document.getElementById('main'));
+
+	if (window.location.pathname == '/') {
+		_reactDom2.default.render(_react2.default.createElement(
+			_reactRedux.Provider,
+			{ store: _messages2.default },
+			_react2.default.createElement(
+				_MuiThemeProvider2.default,
+				{ muiTheme: (0, _getMuiTheme2.default)() },
+				_react2.default.createElement(_home2.default, null)
+			)
+		), document.getElementById('main'));
+	} else {
+		var role = 'guest';
+		if (localStorage.getItem('room')) {
+			role = 'host';
+		}
+		_reactDom2.default.render(_react2.default.createElement(
+			_reactRedux.Provider,
+			{ store: _messages2.default },
+			_react2.default.createElement(
+				_MuiThemeProvider2.default,
+				{ muiTheme: (0, _getMuiTheme2.default)() },
+				_react2.default.createElement(_app2.default, { role: role })
+			)
+		), document.getElementById('main'));
+	}
 
 /***/ },
 /* 1 */
@@ -21158,10 +21175,11 @@
 	var Main = function (_React$Component) {
 		_inherits(Main, _React$Component);
 
-		function Main() {
+		function Main(props) {
 			_classCallCheck(this, Main);
 
-			return _possibleConstructorReturn(this, Object.getPrototypeOf(Main).apply(this, arguments));
+			// console.log(props)
+			return _possibleConstructorReturn(this, Object.getPrototypeOf(Main).call(this, props));
 		}
 
 		_createClass(Main, [{
@@ -21172,7 +21190,7 @@
 					null,
 					_react2.default.createElement(_AppBar2.default, { title: 'Messenger', iconClassNameRight: 'muidocs-icon-navigation-expand-more' }),
 					_react2.default.createElement(_messageList2.default, { messages: this.props.messages }),
-					_react2.default.createElement(_addMessage2.default, null)
+					_react2.default.createElement(_addMessage2.default, { role: this.props.role })
 				);
 			}
 		}]);
@@ -28287,6 +28305,8 @@
 					_react2.default.createElement(
 						'p',
 						null,
+						this.props.message.role,
+						': ',
 						this.props.message.content
 					)
 				);
@@ -35760,13 +35780,15 @@
 
 	var socket = _socket2.default.connect('/');
 
-	var AddTodo = function (_React$Component) {
-		_inherits(AddTodo, _React$Component);
+	var AddMessage = function (_React$Component) {
+		_inherits(AddMessage, _React$Component);
 
-		function AddTodo(props) {
-			_classCallCheck(this, AddTodo);
+		function AddMessage(props) {
+			_classCallCheck(this, AddMessage);
 
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AddTodo).call(this, props));
+			// console.log(props)
+
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AddMessage).call(this, props));
 
 			_this.handleNewMessageInput = function (event) {
 				if (event.keyCode === 13) {
@@ -35775,12 +35797,13 @@
 
 						// Emit socket event for new todo
 						socket.emit('insert', {
-							content: event.target.value
+							content: event.target.value,
+							role: _this.props.role
 						});
 
 						event.target.value = '';
 					} else {
-						_this.setState({ error: 'Tasks must have a name' });
+						_this.setState({ error: "You've entered an empty message!" });
 					}
 				}
 			};
@@ -35789,7 +35812,7 @@
 			return _this;
 		}
 
-		_createClass(AddTodo, [{
+		_createClass(AddMessage, [{
 			key: 'render',
 			value: function render() {
 				return _react2.default.createElement(
@@ -35803,10 +35826,10 @@
 			}
 		}]);
 
-		return AddTodo;
+		return AddMessage;
 	}(_react2.default.Component);
 
-	exports.default = AddTodo;
+	exports.default = AddMessage;
 
 /***/ },
 /* 290 */
@@ -46113,6 +46136,8 @@
 	          });
 
 	          event.target.value = '';
+
+	          localStorage.setItem("room", room);
 	          window.location.href = '/' + room;
 	        } else {
 	          this.setState({ error: 'Room must have a name' });

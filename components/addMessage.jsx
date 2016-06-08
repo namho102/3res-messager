@@ -6,9 +6,10 @@ import TextField from 'material-ui/TextField';
 import io from 'socket.io-client';
 const socket = io.connect('/');
 
-export default class AddTodo extends React.Component {
+export default class AddMessage extends React.Component {
 	constructor(props) {
 		super(props);
+		// console.log(props)
 		this.state = { open: false };
 	};
 
@@ -19,13 +20,14 @@ export default class AddTodo extends React.Component {
 
 				// Emit socket event for new todo
 				socket.emit('insert', {
-					content: event.target.value
+					content: event.target.value,
+					role: this.props.role
 				});
 
 				event.target.value = '';
 			}
 			else {
-				this.setState({ error: 'Tasks must have a name'});
+				this.setState({ error: "You've entered an empty message!"});
 			}
 		}
 	};

@@ -24,6 +24,8 @@ export default class Home extends React.Component {
         });
 
         event.target.value = '';
+
+        localStorage.setItem("room", room);
         window.location.href = '/' + room;
 
 			}

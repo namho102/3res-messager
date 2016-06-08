@@ -6,7 +6,7 @@ const socket = io.connect('/');
 export default class Message extends React.Component {
 	render() {
 		return (<div>
-			<p>{this.props.message.content}</p>
+			<p>{this.props.message.role}: {this.props.message.content}</p>
 		</div>)
 	}
 }

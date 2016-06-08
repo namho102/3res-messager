@@ -29,15 +29,15 @@ var changefeedSocketEvents = function(socket, entityName) {
 
 app.use(express.static('public'));
 
-app.get('/', function(req, res) {
+app.get('*', function(req, res) {
   res.sendFile(path.join(__dirname + '/index.html'));
 });
 
 
-app.get('/:room', function(req, res) {
-	var room = req.params.room;
-  res.send("welcome to " + room);
-});
+// app.get('/:room', function(req, res) {
+// 	var room = req.params.room;
+//   res.send("welcome to " + room);
+// });
 
 r.connect({ db: 'Messenger' })
 .then(function(connection) {
