@@ -46104,8 +46104,7 @@
 	    value: function handleNewRoomInput(event) {
 	      if (event.keyCode === 13) {
 	        if (event.target.value && event.target.value.length > 0) {
-
-	          console.log(event.target.value);
+	          var room = event.target.value;
 
 	          // Emit socket event for new todo
 	          socket.emit('newRoom', {
@@ -46114,6 +46113,7 @@
 	          });
 
 	          event.target.value = '';
+	          window.location.href = '/' + room;
 	        } else {
 	          this.setState({ error: 'Room must have a name' });
 	        }

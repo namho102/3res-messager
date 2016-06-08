@@ -15,8 +15,7 @@ export default class Home extends React.Component {
   handleNewRoomInput(event) {
     if (event.keyCode === 13) {
 			if (event.target.value && event.target.value.length > 0) {
-
-				console.log(event.target.value);
+        var room = event.target.value;
 
         // Emit socket event for new todo
         socket.emit('newRoom', {
@@ -24,7 +23,9 @@ export default class Home extends React.Component {
           createdAt: new Date()
         });
 
-				event.target.value = '';
+        event.target.value = '';
+        window.location.href = '/' + room;
+
 			}
 			else {
 				this.setState({ error: 'Room must have a name'});

@@ -15,7 +15,7 @@ var r = require('rethinkdb');
 
 // Socket.io changefeed events
 var changefeedSocketEvents = function(socket, entityName) {
-	console.log("change feed socket events");
+	// console.log("change feed socket events");
 	return function(rows) {
 		rows.each(function(err, row) {
 			// console.log(row);
@@ -34,6 +34,11 @@ app.get('/', function(req, res) {
 });
 
 
+app.get('/:room', function(req, res) {
+	var room = req.params.room;
+  res.send("welcome to " + room);
+});
+
 r.connect({ db: 'Messenger' })
 .then(function(connection) {
 	io.on('connection', function (socket) {
@@ -42,7 +47,6 @@ r.connect({ db: 'Messenger' })
 		socket.on('newRoom', function(room) {
 			r.table('Rooms').insert(room).run(connection);
 		});
-
 
 		// insert new messages
 		socket.on('insert', function(message) {
@@ -57,7 +61,7 @@ r.connect({ db: 'Messenger' })
 
 	});
 	server.listen(9000, () => {
-		console.log("listening at port 9000")
+		console.log("> Listening at port 9000")
 	});
 })
 .error(function(error) {
