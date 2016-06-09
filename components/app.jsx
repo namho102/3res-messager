@@ -14,7 +14,7 @@ class Main extends React.Component {
 		return (<div>
 			<AppBar title="Messenger" iconClassNameRight="muidocs-icon-navigation-expand-more" />
 			<MessageList messages={this.props.messages} />
-			<AddMessage role={this.props.role}/>
+			<AddMessage role={this.props.role} room={this.props.room}/>
 		</div>);
 	}
 }

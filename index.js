@@ -13,6 +13,9 @@ var io = require('socket.io')(server);
 // Rethinkdb
 var r = require('rethinkdb');
 
+//room name
+var room = '';
+
 // Socket.io changefeed events
 var changefeedSocketEvents = function(socket, entityName) {
 	// console.log("change feed socket events");
@@ -29,15 +32,20 @@ var changefeedSocketEvents = function(socket, entityName) {
 
 app.use(express.static('public'));
 
-app.get('*', function(req, res) {
+app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname + '/index.html'));
 });
 
-
-// app.get('/:room', function(req, res) {
-// 	var room = req.params.room;
-//   res.send("welcome to " + room);
+// app.get('*', function(req, res) {
+//   res.sendFile(path.join(__dirname + '/index.html'));
 // });
+
+
+app.get('/:room', function(req, res) {
+	res.sendFile(path.join(__dirname + '/index.html'));
+	room = req.params.room;
+	console.log(room)
+});
 
 r.connect({ db: 'Messenger' })
 .then(function(connection) {
@@ -54,9 +62,9 @@ r.connect({ db: 'Messenger' })
 		});
 
 		// emit events for changes to messages
-		r.table('Messages').changes({ includeInitial: true, squash: true }).run(connection)
+		r.table('Messages').filter({"room": room})
+		.changes({ includeInitial: true, squash: true }).run(connection)
 		.then(changefeedSocketEvents(socket, 'message'));
-
 
 
 	});

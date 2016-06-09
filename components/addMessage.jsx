@@ -9,7 +9,7 @@ const socket = io.connect('/');
 export default class AddMessage extends React.Component {
 	constructor(props) {
 		super(props);
-		// console.log(props)
+		//  console.log(props)
 		this.state = { open: false };
 	};
 
@@ -21,7 +21,8 @@ export default class AddMessage extends React.Component {
 				// Emit socket event for new todo
 				socket.emit('insert', {
 					content: event.target.value,
-					role: this.props.role
+					role: this.props.role,
+					room: this.props.room
 				});
 
 				event.target.value = '';

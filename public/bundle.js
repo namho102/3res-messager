@@ -99,8 +99,8 @@
 	(0, _reactTapEventPlugin2.default)();
 
 	// Render our react app!
-
-	if (window.location.pathname == '/') {
+	var path = window.location.pathname;
+	if (path == '/') {
 		_reactDom2.default.render(_react2.default.createElement(
 			_reactRedux.Provider,
 			{ store: _messages2.default },
@@ -115,13 +115,14 @@
 		if (localStorage.getItem('room')) {
 			role = 'host';
 		}
+		var room = path.slice(1, path.length);
 		_reactDom2.default.render(_react2.default.createElement(
 			_reactRedux.Provider,
 			{ store: _messages2.default },
 			_react2.default.createElement(
 				_MuiThemeProvider2.default,
 				{ muiTheme: (0, _getMuiTheme2.default)() },
-				_react2.default.createElement(_app2.default, { role: role })
+				_react2.default.createElement(_app2.default, { role: role, room: room })
 			)
 		), document.getElementById('main'));
 	}
@@ -21190,7 +21191,7 @@
 					null,
 					_react2.default.createElement(_AppBar2.default, { title: 'Messenger', iconClassNameRight: 'muidocs-icon-navigation-expand-more' }),
 					_react2.default.createElement(_messageList2.default, { messages: this.props.messages }),
-					_react2.default.createElement(_addMessage2.default, { role: this.props.role })
+					_react2.default.createElement(_addMessage2.default, { role: this.props.role, room: this.props.room })
 				);
 			}
 		}]);
@@ -35849,7 +35850,7 @@
 		function AddMessage(props) {
 			_classCallCheck(this, AddMessage);
 
-			// console.log(props)
+			//  console.log(props)
 
 			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AddMessage).call(this, props));
 
@@ -35861,7 +35862,8 @@
 						// Emit socket event for new todo
 						socket.emit('insert', {
 							content: event.target.value,
-							role: _this.props.role
+							role: _this.props.role,
+							room: _this.props.room
 						});
 
 						event.target.value = '';
@@ -37340,6 +37342,7 @@
 
 	          event.target.value = '';
 
+	          // this.setState({room: room});
 	          localStorage.setItem("room", room);
 	          window.location.href = '/' + room;
 	        } else {

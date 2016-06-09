@@ -19,8 +19,8 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 // Render our react app!
-
-if(window.location.pathname == '/') {
+let path = window.location.pathname;
+if(path == '/') {
 	ReactDOM.render(<Provider store={store} >
 		<MuiThemeProvider muiTheme={getMuiTheme()}>
 			<Home />
@@ -32,9 +32,10 @@ else {
 	if(localStorage.getItem('room')) {
 			role = 'host';
 	}
+	var room = path.slice(1, path.length);
 	ReactDOM.render(<Provider store={store} >
 		<MuiThemeProvider muiTheme={getMuiTheme()}>
-			<App role={role}/>
+			<App role={role} room={room}/>
 		</MuiThemeProvider>
 	</Provider>, document.getElementById('main'));
 }
