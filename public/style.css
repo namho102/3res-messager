@@ -7,6 +7,26 @@ body {
 	margin: 20px;
 }
 
+.item {
+	position: relative;
+	/*margin: 0 10px;*/
+	width: 450px;
+
+  /*align-items: center;*/
+  /*justify-content: center;*/
+}
+.item p {
+	margin: 5px 0;
+}
+
+.guest {
+
+}
 .host {
+	/*text-align: left;*/
+	/*position: absolute;*/
 	color: #1F8CC1;
+	margin-left: 50%;
+	text-align: right;
+	/*right: 0px;*/
 }

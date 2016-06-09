@@ -11,10 +11,10 @@ export default class Message extends React.Component {
   }
 	render() {
 		var roleClass = ClassNames({
-	  	'host': this.props.message.role == 'host' ? false : true,
-	    'guest': this.props.message.role == 'host' ? true : false
+	  	'host': this.props.message.role == 'host' ? true : false,
+	    'guest': this.props.message.role == 'host' ? false : true
 	  });
-		return (<div>
+		return (<div className="item">
 			<p className={roleClass}>{this.props.message.role}: {this.props.message.content}</p>
 		</div>)
 	}

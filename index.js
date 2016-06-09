@@ -44,7 +44,7 @@ app.get('/', function(req, res) {
 app.get('/:room', function(req, res) {
 	res.sendFile(path.join(__dirname + '/index.html'));
 	room = req.params.room;
-	console.log(room)
+	// console.log(room)
 });
 
 r.connect({ db: 'Messenger' })
