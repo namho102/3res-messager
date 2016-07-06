@@ -28315,8 +28315,6 @@
 					_react2.default.createElement(
 						'p',
 						{ className: roleClass },
-						this.props.message.role,
-						': ',
 						this.props.message.content
 					)
 				);
@@ -35863,7 +35861,8 @@
 						socket.emit('insert', {
 							content: event.target.value,
 							role: _this.props.role,
-							room: _this.props.room
+							room: _this.props.room,
+							createdAt: new Date()
 						});
 
 						event.target.value = '';

@@ -1,6 +1,6 @@
 body {
 	margin: 0;
-	font-family: "Roboto";
+	font-family: 'Roboto Medium';
 }
 
 .messages {
@@ -11,7 +11,6 @@ body {
 	position: relative;
 	/*margin: 0 10px;*/
 	width: 450px;
-
   /*align-items: center;*/
   /*justify-content: center;*/
 }

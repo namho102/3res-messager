@@ -22,7 +22,8 @@ export default class AddMessage extends React.Component {
 				socket.emit('insert', {
 					content: event.target.value,
 					role: this.props.role,
-					room: this.props.room
+					room: this.props.room,
+					createdAt: new Date()
 				});
 
 				event.target.value = '';

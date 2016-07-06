@@ -22,10 +22,11 @@ var changefeedSocketEvents = function(socket, entityName) {
 	return function(rows) {
 		rows.each(function(err, row) {
 			// console.log(row);
-			if (err) { return console.log(err); }
-			else if (row.new_val && !row.old_val) {
-				socket.emit("insert", row.new_val);
-			}
+			socket.emit("insert", row);
+			// if (err) { return console.log(err); }
+			// else if (row.new_val && !row.old_val) {
+			// 	socket.emit("insert", row.new_val);
+			// }
 		});
 	};
 };
@@ -39,7 +40,6 @@ app.get('/', function(req, res) {
 // app.get('*', function(req, res) {
 //   res.sendFile(path.join(__dirname + '/index.html'));
 // });
-
 
 app.get('/:room', function(req, res) {
 	res.sendFile(path.join(__dirname + '/index.html'));
@@ -59,17 +59,18 @@ r.connect({ db: 'Messenger' })
 		// insert new messages
 		socket.on('insert', function(message) {
 			r.table('Messages').insert(message).run(connection);
+
 		});
 
 		// emit events for changes to messages
-		r.table('Messages').filter({"room": room})
-		.changes({ includeInitial: true, squash: true }).run(connection)
+		r.table('Messages').orderBy('createdAt').filter({"room": room})
+		// .changes({ includeInitial: true, squash: true }).run(connection)
+		.run(connection)
 		.then(changefeedSocketEvents(socket, 'message'));
-
 
 	});
 	server.listen(9000, () => {
-		console.log("> Listening at port 9000")
+		console.log("> Listening at port 9000");
 	});
 })
 .error(function(error) {
