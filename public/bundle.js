@@ -37380,7 +37380,7 @@
 	});
 
 	exports.default = function (store) {
-		socket.on('insert', function (message) {
+		socket.on('message:insert', function (message) {
 			console.log('inserted');
 			store.dispatch({
 				type: 'insert',

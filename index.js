@@ -21,12 +21,18 @@ var changefeedSocketEvents = function(socket, entityName) {
 	// console.log("change feed socket events");
 	return function(rows) {
 		rows.each(function(err, row) {
-			// console.log(row);
-			socket.emit("insert", row);
-			// if (err) { return console.log(err); }
-			// else if (row.new_val && !row.old_val) {
-			// 	socket.emit("insert", row.new_val);
-			// }
+			// console.log(row.new_val.content);
+			// socket.emit("insert", row);
+			// socket.emit("insert", row.new_val);
+			if (err) { return console.log(err); }
+			else if (row.new_val && !row.old_val) {
+				// console.log(row.new_val)
+				socket.emit("message:insert", row.new_val);
+
+			}
+			else {
+				socket.emit("message:insert", row);
+			}
 		});
 	};
 };
@@ -49,6 +55,7 @@ app.get('/:room', function(req, res) {
 
 r.connect({ db: 'Messenger' })
 .then(function(connection) {
+
 	io.on('connection', function (socket) {
 
 		//new room request
@@ -57,14 +64,21 @@ r.connect({ db: 'Messenger' })
 		});
 
 		// insert new messages
+		// var con = connection;
 		socket.on('insert', function(message) {
 			r.table('Messages').insert(message).run(connection);
 
 		});
 
+
 		// emit events for changes to messages
-		r.table('Messages').orderBy('createdAt').filter({"room": room})
-		// .changes({ includeInitial: true, squash: true }).run(connection)
+		r.table('Messages')
+		// .orderBy({ index: 'createdAt' })
+		.orderBy({ index: r.asc('createdAt') })
+		.filter({"room": room})
+		.changes()
+		// .changes({ includeInitial: true, squash: true })
+		// .orderBy('createdAt')
 		.run(connection)
 		.then(changefeedSocketEvents(socket, 'message'));
 
