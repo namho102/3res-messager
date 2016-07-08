@@ -21,6 +21,7 @@ var changefeedSocketEvents = function(socket, entityName) {
 	// console.log("change feed socket events");
 	return function(rows) {
 		rows.each(function(err, row) {
+			// console.log(row)
 			// console.log(row.new_val.content);
 			// socket.emit("insert", row);
 			// socket.emit("insert", row.new_val);
@@ -70,17 +71,15 @@ r.connect({ db: 'Messenger' })
 
 		});
 
-
-		// emit events for changes to messages
-		r.table('Messages')
-		// .orderBy({ index: 'createdAt' })
-		.orderBy({ index: r.asc('createdAt') })
-		.filter({"room": room})
-		.changes()
-		// .changes({ includeInitial: true, squash: true })
-		// .orderBy('createdAt')
+		//initial state
+		r.table('Messages').orderBy({ index: r.asc('createdAt') }).filter({"room": room})
 		.run(connection)
 		.then(changefeedSocketEvents(socket, 'message'));
+
+		// emit events for changes to messages
+		r.table('Messages').filter({"room": room})
+		.changes()
+		.run(connection).then(changefeedSocketEvents(socket, 'message'));
 
 	});
 	server.listen(9000, () => {
