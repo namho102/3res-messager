@@ -1,31 +1,35 @@
 body {
 	margin: 0;
-	font-family: 'Roboto Medium';
+	font-family: 'Roboto';
 }
 
 .messages {
 	margin: 20px;
+	width: 450px;
+	display: flex;
+	flex-direction: column;
 }
 
 .item {
+	border-radius: 2px;
+	max-width: 80%;
 	position: relative;
-	/*margin: 0 10px;*/
-	width: 450px;
-  /*align-items: center;*/
-  /*justify-content: center;*/
 }
+
 .item p {
+	display: inline-block;
 	margin: 5px 0;
 }
 
-.guest {
-
-}
 .host {
-	/*text-align: left;*/
-	/*position: absolute;*/
-	color: #1F8CC1;
-	margin-left: 50%;
-	text-align: right;
-	/*right: 0px;*/
+	align-self: flex-end;
+}
+.guest p {
+	background: #F1F0F0;
+	padding: 10px;
+}
+.host p {
+	background: #1F8CC1;
+	color: #FFF;
+	padding: 10px;
 }

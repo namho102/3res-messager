@@ -28306,15 +28306,15 @@
 			key: 'render',
 			value: function render() {
 				var roleClass = (0, _classnames2.default)({
-					'host': this.props.message.role == 'host' ? true : false,
-					'guest': this.props.message.role == 'host' ? false : true
+					'item host': this.props.message.role == 'host' ? true : false,
+					'item guest': this.props.message.role == 'host' ? false : true
 				});
 				return _react2.default.createElement(
 					'div',
-					{ className: 'item' },
+					{ className: roleClass },
 					_react2.default.createElement(
 						'p',
-						{ className: roleClass },
+						null,
 						this.props.message.content
 					)
 				);
