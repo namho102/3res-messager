@@ -29,7 +29,7 @@ if(path == '/') {
 }
 else {
 	var role = 'guest';
-	if(localStorage.getItem('room')) {
+	if(localStorage.getItem('room') == window.location.pathname.slice(1)) {
 			role = 'host';
 	}
 	var room = path.slice(1, path.length);
