@@ -1,5 +1,5 @@
 {
-  "name": "3res_todo",
+  "name": "3res-messenger",
   "version": "1.0.0",
   "description": "A sample note app for the 3RES stack",
   "main": "index.js",
